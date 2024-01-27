@@ -4,124 +4,124 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
-
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Repository
-public class FinanceMetaDataApiRepoFileImpl extends
-        FinanceMetaDataAbstractFileDao implements FinanceMetaDataApiRepo {
+public class FinanceMetaDataApiRepoFileImpl extends FinanceMetaDataAbstractFileDao
+    implements FinanceMetaDataApiRepo {
 
-    private final ObjectMapper objectMapper;
+  private final ObjectMapper objectMapper;
 
-    public FinanceMetaDataApiRepoFileImpl(
-            @Value("${file.path.name:metadata.json}") String filePath,
-            ObjectMapper objectMapper) {
-        super(filePath);
-        this.objectMapper = objectMapper;
+  public FinanceMetaDataApiRepoFileImpl(@Value("${file.path.name:metadata.json}") String filePath,
+      ObjectMapper objectMapper) {
+    super(filePath);
+    this.objectMapper = objectMapper;
+  }
+
+  @Override
+  public Map<String, Map<String, String>> getMetaData(String dataset,
+      Map<String, String> paramsMap) {
+
+
+    if (!paramsMap.containsKey("fields") || paramsMap.get("fields") == null
+        || paramsMap.get("fields").isEmpty()) {
+      return getMetaData(dataset);
     }
 
-    @Override
-    public Map<String, Map<String, String>> getMetaData(String dataset,
-            Map<String, String> paramsMap) {
 
-        String[] fieldsArray = Arrays.stream(paramsMap.get("fields").split(","))
-                .map(String::trim).toArray(String[]::new);
 
-        Map<String, Map<String, String>> result = new HashMap<>();
+    String[] fieldsArray =
+        Arrays.stream(paramsMap.get("fields").split(",")).map(String::trim).toArray(String[]::new);
 
-        try {
-            JsonNode rootNode = objectMapper.readTree(jsonData);
+    Map<String, Map<String, String>> result = new HashMap<>();
 
-            if (rootNode.has(dataset)) {
-                JsonNode topLevelNode = rootNode.get(dataset);
+    try {
+      JsonNode rootNode = objectMapper.readTree(jsonData);
 
-                Map<String, String> labels = extractNodeValues(topLevelNode,
-                        "labels", fieldsArray);
-                Map<String, String> dataTypes = extractNodeValues(topLevelNode,
-                        "dataTypes", fieldsArray);
-                Map<String, String> dataFormats = extractNodeValues(
-                        topLevelNode, "dataFormats", fieldsArray);
+      if (rootNode.has(dataset)) {
+        JsonNode topLevelNode = rootNode.get(dataset);
 
-                result.put("labels", labels);
-                result.put("dataTypes", dataTypes);
-                result.put("dataFormats", dataFormats);
+        Map<String, String> labels = extractNodeValues(topLevelNode, "labels", fieldsArray);
+        Map<String, String> dataTypes = extractNodeValues(topLevelNode, "dataTypes", fieldsArray);
+        Map<String, String> dataFormats =
+            extractNodeValues(topLevelNode, "dataFormats", fieldsArray);
 
-            } else {
+        result.put("labels", labels);
+        result.put("dataTypes", dataTypes);
+        result.put("dataFormats", dataFormats);
 
-                System.err.println("Dataset Metdata not found: " + dataset);
-                return null;
-            }
-        } catch (IOException e) {
+      } else {
 
-            e.printStackTrace();
-            return null;
+        System.err.println("Dataset Metdata not found: " + dataset);
+        return null;
+      }
+    } catch (IOException e) {
+
+      e.printStackTrace();
+      return null;
+    }
+    return result;
+  }
+
+  private static Map<String, String> extractNodeValues(JsonNode node, String subNodeName,
+      String[] fields) {
+    Map<String, String> result = new HashMap<>();
+
+    if (node.has(subNodeName)) {
+      JsonNode subNode = node.get(subNodeName);
+
+      for (String field : fields) {
+        if (subNode.has(field)) {
+          result.put(field, subNode.get(field).asText());
+        } else {
+          // Handle the case where the field is not found in the
+          // subNode
+          System.err.println("Field not found: " + field);
         }
-        return result;
+      }
     }
 
-    private static Map<String, String> extractNodeValues(JsonNode node,
-            String subNodeName, String[] fields) {
-        Map<String, String> result = new HashMap<>();
+    return result;
+  }
 
-        if (node.has(subNodeName)) {
-            JsonNode subNode = node.get(subNodeName);
+  @Override
+  public Map<String, Map<String, String>> getMetaData(String dataset) {
+    Map<String, Map<String, String>> result = new HashMap<>();
 
-            for (String field : fields) {
-                if (subNode.has(field)) {
-                    result.put(field, subNode.get(field).asText());
-                } else {
-                    // Handle the case where the field is not found in the
-                    // subNode
-                    System.err.println("Field not found: " + field);
-                }
-            }
-        }
+    try {
+      JsonNode rootNode = objectMapper.readTree(jsonData);
 
-        return result;
+      if (rootNode.has(dataset)) {
+        JsonNode topLevelNode = rootNode.get(dataset);
+
+        result.put("labels", convertJsonNodeToMap(topLevelNode.get("labels")));
+        result.put("dataTypes", convertJsonNodeToMap(topLevelNode.get("dataTypes")));
+        result.put("dataFormats", convertJsonNodeToMap(topLevelNode.get("dataFormats")));
+
+      } else {
+        System.err.println("Dataset Metadata not found: " + dataset);
+        return new HashMap<String, Map<String, String>>();
+      }
+    } catch (IOException e) {
+      e.printStackTrace();
+      return null;
     }
 
-    @Override
-    public Map<String, Map<String, String>> getMetaData(String dataset) {
-        Map<String, Map<String, String>> result = new HashMap<>();
+    return result;
+  }
 
-        try {
-            JsonNode rootNode = objectMapper.readTree(jsonData);
+  private Map<String, String> convertJsonNodeToMap(JsonNode node) {
+    Map<String, String> resultMap = new HashMap<>();
 
-            if (rootNode.has(dataset)) {
-                JsonNode topLevelNode = rootNode.get(dataset);
-
-                result.put("labels",
-                        convertJsonNodeToMap(topLevelNode.get("labels")));
-                result.put("dataTypes",
-                        convertJsonNodeToMap(topLevelNode.get("dataTypes")));
-                result.put("dataFormats",
-                        convertJsonNodeToMap(topLevelNode.get("dataFormats")));
-
-            } else {
-                System.err.println("Dataset Metadata not found: " + dataset);
-                return null;
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
-
-        return result;
+    if (node != null && node.isObject()) {
+      node.fields()
+          .forEachRemaining(entry -> resultMap.put(entry.getKey(), entry.getValue().asText()));
     }
 
-    private Map<String, String> convertJsonNodeToMap(JsonNode node) {
-        Map<String, String> resultMap = new HashMap<>();
-
-        if (node != null && node.isObject()) {
-            node.fields().forEachRemaining(entry -> resultMap
-                    .put(entry.getKey(), entry.getValue().asText()));
-        }
-
-        return resultMap;
-    }
+    return resultMap;
+  }
 
 }

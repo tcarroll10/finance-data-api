@@ -2,6 +2,9 @@ package com.tcarroll10.finance.domain;
 
 import java.util.Objects;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
+
 /**
  * Error message POJO class.
  * 
@@ -9,26 +12,55 @@ import java.util.Objects;
  * @version 2023-12-27
  */
 
+@JsonDeserialize(builder = ErrorMsg.Builder.class)
 public class ErrorMsg {
 
-    private static final String ERROR = "Invalid Query Param";
+    private String error;
     private String message;
 
-    /**
-     * Constructor class. Only a single constructor b/c only one variable
-     * changes
-     * 
-     * @param message is the error message returned to client. It will inform
-     * user of invalid input.
-     */
+    private ErrorMsg(Builder builder) {
+        this.error = builder.error;
+        this.message = builder.message;
+    }
 
-    public ErrorMsg(String message) {
+    public static Builder builder() {
+        return new Builder();
+    }
 
-        this.message = message;
+    public static Builder builder(ErrorMsg errorMsg) {
+        return new Builder(errorMsg);
+    }
+
+    @JsonPOJOBuilder(buildMethodName = "build", withPrefix = "")
+    public static final class Builder {
+        private String error;
+        private String message;
+
+        private Builder() {
+        }
+
+        private Builder(ErrorMsg errorMsg) {
+            this.error = errorMsg.error;
+            this.message = errorMsg.message;
+        }
+
+        public Builder error(String error) {
+            this.error = error;
+            return this;
+        }
+
+        public Builder message(String message) {
+            this.message = message;
+            return this;
+        }
+
+        public ErrorMsg build() {
+            return new ErrorMsg(this);
+        }
     }
 
     public String getError() {
-        return ERROR;
+        return error;
     }
 
     public String getMessage() {
@@ -37,7 +69,7 @@ public class ErrorMsg {
 
     @Override
     public int hashCode() {
-        return Objects.hash(message);
+        return Objects.hash(error, message);
     }
 
     @Override
@@ -49,7 +81,8 @@ public class ErrorMsg {
         if (getClass() != obj.getClass())
             return false;
         ErrorMsg other = (ErrorMsg) obj;
-        return Objects.equals(message, other.message);
+        return Objects.equals(error, other.error)
+                && Objects.equals(message, other.message);
     }
 
 }

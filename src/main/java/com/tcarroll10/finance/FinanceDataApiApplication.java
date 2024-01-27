@@ -14,14 +14,14 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class FinanceDataApiApplication {
 
-    /**
-     * This is the main method.
-     * 
-     * @param args Command-line arguments.
-     */
+  /**
+   * This is the main method.
+   * 
+   * @param args Command-line arguments.
+   */
 
-    public static void main(String[] args) {
-        SpringApplication.run(FinanceDataApiApplication.class, args);
-    }
+  public static void main(String[] args) {
+    SpringApplication.run(FinanceDataApiApplication.class, args);
+  }
 
 }
