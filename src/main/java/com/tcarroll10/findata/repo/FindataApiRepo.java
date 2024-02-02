@@ -10,7 +10,7 @@ import java.util.Map;
  * @version 2023-12-27
  */
 
-public interface FinDataApiRepo {
+public interface FindataApiRepo {
 
     /**
      * This method supports requests with no parameters.

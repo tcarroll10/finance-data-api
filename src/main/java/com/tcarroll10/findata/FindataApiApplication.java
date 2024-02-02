@@ -12,7 +12,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  */
 
 @SpringBootApplication
-public class FinDataApiApplication {
+public class FindataApiApplication {
 
   /**
    * This is the main method.
@@ -21,7 +21,7 @@ public class FinDataApiApplication {
    */
 
   public static void main(String[] args) {
-    SpringApplication.run(FinDataApiApplication.class, args);
+    SpringApplication.run(FindataApiApplication.class, args);
   }
 
 }

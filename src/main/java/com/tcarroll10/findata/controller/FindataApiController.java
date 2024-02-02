@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import com.tcarroll10.findata.service.FinDataApiService;
+import com.tcarroll10.findata.service.FindataApiService;
 
 /**
  * RestController class for Finance data api service.
@@ -21,11 +21,11 @@ import com.tcarroll10.findata.service.FinDataApiService;
 @RequestMapping(path = "/api/v2", produces = "application/json")
 
 @RestController
-public class FinDataApiController {
+public class FindataApiController {
 
-  private static final Logger LOG = LogManager.getLogger(FinDataApiController.class);
+  private static final Logger LOG = LogManager.getLogger(FindataApiController.class);
 
-  private final FinDataApiService service;
+  private final FindataApiService service;
 
   /**
    * Constructor for controller allows service injection.
@@ -33,7 +33,7 @@ public class FinDataApiController {
    * @param service Command-line arguments.
    */
 
-  public FinDataApiController(FinDataApiService service) {
+  public FindataApiController(FindataApiService service) {
 
     this.service = service;
   }

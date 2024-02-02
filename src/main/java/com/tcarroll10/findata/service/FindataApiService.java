@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
  * @author tom carroll
  * @version 2023-12-27
  */
-public interface FinDataApiService {
+public interface FindataApiService {
 
   /**
    * This method will validate the user request parameter inputs and return ResponseEntity with

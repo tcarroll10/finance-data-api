@@ -10,13 +10,13 @@ import java.util.Map;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import com.tcarroll10.findata.repo.FinMetaDataApiRepo;
+import com.tcarroll10.findata.repo.FindataMetadataApiRepo;
 
 @SpringBootTest
 public class FinanceMetaDataApiFileRepoTest {
 
     @Autowired
-    FinMetaDataApiRepo repo;
+    FindataMetadataApiRepo repo;
 
     @Test
     public void getMetaDataTest() {

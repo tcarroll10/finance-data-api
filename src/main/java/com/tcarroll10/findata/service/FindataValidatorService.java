@@ -9,17 +9,17 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import com.tcarroll10.findata.domain.ErrorMsg;
-import com.tcarroll10.findata.repo.FinMetaDataApiRepo;
+import com.tcarroll10.findata.repo.FindataMetadataApiRepo;
 import com.tcarroll10.findata.utils.Const;
 
 @Service
-public class FinDataValidatorService {
+public class FindataValidatorService {
 
 
 
-  private static final Logger LOG = LogManager.getLogger(FinDataValidatorService.class);
+  private static final Logger LOG = LogManager.getLogger(FindataValidatorService.class);
 
-  private final FinMetaDataApiRepo metaRepo;
+  private final FindataMetadataApiRepo metaRepo;
 
   /**
    * Constructor for controller allows service injection.
@@ -30,7 +30,7 @@ public class FinDataValidatorService {
    */
 
 
-  public FinDataValidatorService(FinMetaDataApiRepo metaRepo) {
+  public FindataValidatorService(FindataMetadataApiRepo metaRepo) {
 
     this.metaRepo = metaRepo;
 

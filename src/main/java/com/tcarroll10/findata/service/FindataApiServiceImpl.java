@@ -10,8 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import com.tcarroll10.findata.domain.Meta;
 import com.tcarroll10.findata.domain.OutDataTo;
-import com.tcarroll10.findata.repo.FinDataApiRepo;
-import com.tcarroll10.findata.repo.FinMetaDataApiRepo;
+import com.tcarroll10.findata.repo.FindataApiRepo;
+import com.tcarroll10.findata.repo.FindataMetadataApiRepo;
 import com.tcarroll10.findata.utils.ParamsMapUtil;
 
 /**
@@ -22,15 +22,15 @@ import com.tcarroll10.findata.utils.ParamsMapUtil;
  */
 
 @Service
-public class FinDataApiServiceImpl implements FinDataApiService {
+public class FindataApiServiceImpl implements FindataApiService {
 
-  private static final Logger LOG = LogManager.getLogger(FinDataApiServiceImpl.class);
+  private static final Logger LOG = LogManager.getLogger(FindataApiServiceImpl.class);
 
-  private final FinDataApiRepo dataRepo;
+  private final FindataApiRepo dataRepo;
 
-  private final FinMetaDataApiRepo metaRepo;
+  private final FindataMetadataApiRepo metaRepo;
 
-  private final FinDataValidatorService validator;
+  private final FindataValidatorService validator;
 
 
   /**
@@ -41,8 +41,8 @@ public class FinDataApiServiceImpl implements FinDataApiService {
    * 
    */
 
-  public FinDataApiServiceImpl(FinDataApiRepo dataRepo, FinMetaDataApiRepo metaRepo,
-      FinDataValidatorService validator) {
+  public FindataApiServiceImpl(FindataApiRepo dataRepo, FindataMetadataApiRepo metaRepo,
+      FindataValidatorService validator) {
 
     this.dataRepo = dataRepo;
     this.metaRepo = metaRepo;

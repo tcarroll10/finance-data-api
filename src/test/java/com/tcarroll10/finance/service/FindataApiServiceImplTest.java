@@ -13,17 +13,17 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import com.tcarroll10.findata.domain.ErrorMsg;
-import com.tcarroll10.findata.service.FinDataApiService;
+import com.tcarroll10.findata.service.FindataApiService;
 import com.tcarroll10.findata.utils.Const;
 
 @SpringBootTest
-public class FinanceDataApiServiceImplTest {
+public class FindataApiServiceImplTest {
 
     @Autowired
-    private FinDataApiService service;
+    private FindataApiService service;
 
     private static final Logger LOG = LogManager
-            .getLogger(FinanceDataApiServiceImplTest.class);
+            .getLogger(FindataApiServiceImplTest.class);
 
     @Test
     public void validateRequestInputParameterKeysTest() {

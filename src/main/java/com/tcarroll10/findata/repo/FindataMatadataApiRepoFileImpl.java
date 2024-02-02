@@ -10,12 +10,12 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Repository
-public class FinMetaDataApiRepoFileImpl extends FinMetaDataAbstractFileDao
-    implements FinMetaDataApiRepo {
+public class FindataMatadataApiRepoFileImpl extends FindataMetadataAbstractFileDao
+    implements FindataMetadataApiRepo {
 
   private final ObjectMapper objectMapper;
 
-  public FinMetaDataApiRepoFileImpl(@Value("${file.path.name:metadata.json}") String filePath,
+  public FindataMatadataApiRepoFileImpl(@Value("${file.path.name:metadata.json}") String filePath,
       ObjectMapper objectMapper) {
     super(filePath);
     this.objectMapper = objectMapper;

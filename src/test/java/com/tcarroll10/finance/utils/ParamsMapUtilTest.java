@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import com.tcarroll10.findata.utils.ParamsMapHelper;
 import com.tcarroll10.findata.utils.ParamsMapUtil;
 
 public class ParamsMapUtilTest {
@@ -92,6 +93,46 @@ public class ParamsMapUtilTest {
     assertEquals(
         "record_date in ('2023-09-30','2023-10-31') and record_date in ('2023-09-30','2023-10-31')",
         ParamsMapUtil.processFilters(testMap));
+
+  }
+
+
+  void processSortTest() {
+
+    // sort param not present
+    assertEquals("", ParamsMapHelper.processSort(testMap));
+
+    // null
+    testMap.put("sort", null);
+    assertEquals("", ParamsMapHelper.processSort(testMap));
+
+    // empty
+    testMap.put("sort", "");
+    assertEquals("", ParamsMapHelper.processSort(testMap));
+
+    // one element sort DESC
+    testMap.put("sort", "-record_date");
+    assertEquals("record_date DESC", ParamsMapHelper.processSort(testMap));
+
+    // one element sort DESC
+    testMap.put("sort", "record_date");
+    assertEquals("record_date ASC", ParamsMapHelper.processSort(testMap));
+
+    // two element sort DESC, DESC
+    testMap.put("sort", "-f1,-f2");
+    assertEquals("f1 DESC, f2 DESC", ParamsMapHelper.processSort(testMap));
+
+    // two element sort DESC, ASC
+    testMap.put("sort", "-f1,f2");
+    assertEquals("f1 DESC, f2 ASC", ParamsMapHelper.processSort(testMap));
+
+    // two element sort ASC,ASC
+    testMap.put("sort", "f1,f2");
+    assertEquals("f1 ASC, f2 ASC", ParamsMapHelper.processSort(testMap));
+
+    // two element sort ASC,DESC
+    testMap.put("sort", "f1,-f2");
+    assertEquals("f1 ASC, f2 DESC", ParamsMapHelper.processSort(testMap));
 
   }
 

@@ -9,7 +9,7 @@ import java.util.Map;
  * @version 2023-12-27
  */
 
-public interface FinMetaDataApiRepo {
+public interface FindataMetadataApiRepo {
 
     public Map<String, Map<String, String>> getMetaData(String dataset,
             Map<String, String> paramsMap);

@@ -5,11 +5,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-public abstract class FinMetaDataAbstractFileDao {
+public abstract class FindataMetadataAbstractFileDao {
 
     protected byte[] jsonData;
 
-    public FinMetaDataAbstractFileDao(final String filePath) {
+    public FindataMetadataAbstractFileDao(final String filePath) {
 
         Path path = Paths.get(filePath);
         try {

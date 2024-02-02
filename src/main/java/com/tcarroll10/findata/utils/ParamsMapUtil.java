@@ -109,6 +109,39 @@ public abstract class ParamsMapUtil {
 
   }
 
+
+  public static String processSort(Map<String, String> params) {
+
+    String orderBy = "";
+    List<String> pieces = new ArrayList<>();
+
+    if (!params.containsKey("sort"))
+      return orderBy;
+
+    String values = params.get("sort");
+
+    if (values != null && !values.isEmpty()) {
+
+      String[] sortArray = values.split(",");
+
+      for (String item : sortArray) {
+
+        if (item.charAt(0) == '-') {
+          pieces.add(item.substring(1) + " DESC");
+        } else {
+          pieces.add(item + " ASC");
+        }
+
+      }
+
+      orderBy = String.join(", ", pieces);
+
+
+    }
+
+    return orderBy;
+  }
+
   /**
    * Splits the 'filter' request parameter. Uses a
    * 

@@ -20,11 +20,11 @@ import com.tcarroll10.findata.utils.ParamsMapHelper;
 @Repository
 
 @Primary
-public class FinDataApiRepoJdbcImpl implements FinDataApiRepo {
+public class FindataApiRepoJdbcImpl implements FindataApiRepo {
 
   private NamedParameterJdbcTemplate jdbcTemplate;
 
-  private static final Logger LOG = LogManager.getLogger(FinDataApiRepoJdbcImpl.class);
+  private static final Logger LOG = LogManager.getLogger(FindataApiRepoJdbcImpl.class);
 
   /**
    * Constructor for controller allows service injection.
@@ -32,7 +32,7 @@ public class FinDataApiRepoJdbcImpl implements FinDataApiRepo {
    * @param jdbcTemplate NamedParameterJdbcTemplate used for querying the database.
    */
 
-  public FinDataApiRepoJdbcImpl(NamedParameterJdbcTemplate jdbcTemplate) {
+  public FindataApiRepoJdbcImpl(NamedParameterJdbcTemplate jdbcTemplate) {
 
     this.jdbcTemplate = jdbcTemplate;
   }
