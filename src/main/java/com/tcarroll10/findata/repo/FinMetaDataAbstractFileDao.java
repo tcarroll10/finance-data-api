@@ -1,15 +1,15 @@
-package com.tcarroll10.finance.repo;
+package com.tcarroll10.findata.repo;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-public abstract class FinanceMetaDataAbstractFileDao {
+public abstract class FinMetaDataAbstractFileDao {
 
     protected byte[] jsonData;
 
-    public FinanceMetaDataAbstractFileDao(final String filePath) {
+    public FinMetaDataAbstractFileDao(final String filePath) {
 
         Path path = Paths.get(filePath);
         try {

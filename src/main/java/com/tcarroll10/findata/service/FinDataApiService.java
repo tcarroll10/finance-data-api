@@ -1,15 +1,15 @@
-package com.tcarroll10.finance.service;
+package com.tcarroll10.findata.service;
 
 import java.util.Map;
 import org.springframework.http.ResponseEntity;
 
 /**
- * Service for do vlidate
+ * Service for processing the fin data api request
  * 
  * @author tom carroll
  * @version 2023-12-27
  */
-public interface FinanceDataApiService {
+public interface FinDataApiService {
 
   /**
    * This method will validate the user request parameter inputs and return ResponseEntity with

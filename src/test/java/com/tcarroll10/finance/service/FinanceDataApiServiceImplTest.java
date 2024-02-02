@@ -12,15 +12,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-
-import com.tcarroll10.finance.domain.ErrorMsg;
-import com.tcarroll10.finance.utils.Const;
+import com.tcarroll10.findata.domain.ErrorMsg;
+import com.tcarroll10.findata.service.FinDataApiService;
+import com.tcarroll10.findata.utils.Const;
 
 @SpringBootTest
 public class FinanceDataApiServiceImplTest {
 
     @Autowired
-    private FinanceDataApiService service;
+    private FinDataApiService service;
 
     private static final Logger LOG = LogManager
             .getLogger(FinanceDataApiServiceImplTest.class);

@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import com.tcarroll10.findata.utils.ParamsMapUtil;
 
 public class ParamsMapUtilTest {
 

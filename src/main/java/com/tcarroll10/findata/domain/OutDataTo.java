@@ -1,4 +1,4 @@
-package com.tcarroll10.finance.domain;
+package com.tcarroll10.findata.domain;
 
 import java.util.Collections;
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.tcarroll10.finance.repo;
+package com.tcarroll10.findata.repo;
 
 import java.util.List;
 import java.util.Map;
@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
-import com.tcarroll10.finance.utils.ParamsMapHelper;
+import com.tcarroll10.findata.utils.ParamsMapHelper;
 
 /**
  * Repository class for Finance data api service.
@@ -20,11 +20,11 @@ import com.tcarroll10.finance.utils.ParamsMapHelper;
 @Repository
 
 @Primary
-public class FinanceDataApiRepoJdbcImpl implements FinanceDataApiRepo {
+public class FinDataApiRepoJdbcImpl implements FinDataApiRepo {
 
   private NamedParameterJdbcTemplate jdbcTemplate;
 
-  private static final Logger LOG = LogManager.getLogger(FinanceDataApiRepoJdbcImpl.class);
+  private static final Logger LOG = LogManager.getLogger(FinDataApiRepoJdbcImpl.class);
 
   /**
    * Constructor for controller allows service injection.
@@ -32,7 +32,7 @@ public class FinanceDataApiRepoJdbcImpl implements FinanceDataApiRepo {
    * @param jdbcTemplate NamedParameterJdbcTemplate used for querying the database.
    */
 
-  public FinanceDataApiRepoJdbcImpl(NamedParameterJdbcTemplate jdbcTemplate) {
+  public FinDataApiRepoJdbcImpl(NamedParameterJdbcTemplate jdbcTemplate) {
 
     this.jdbcTemplate = jdbcTemplate;
   }

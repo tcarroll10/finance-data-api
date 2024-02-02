@@ -1,4 +1,4 @@
-package com.tcarroll10.finance.repo;
+package com.tcarroll10.findata.repo;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -10,12 +10,12 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Repository
-public class FinanceMetaDataApiRepoFileImpl extends FinanceMetaDataAbstractFileDao
-    implements FinanceMetaDataApiRepo {
+public class FinMetaDataApiRepoFileImpl extends FinMetaDataAbstractFileDao
+    implements FinMetaDataApiRepo {
 
   private final ObjectMapper objectMapper;
 
-  public FinanceMetaDataApiRepoFileImpl(@Value("${file.path.name:metadata.json}") String filePath,
+  public FinMetaDataApiRepoFileImpl(@Value("${file.path.name:metadata.json}") String filePath,
       ObjectMapper objectMapper) {
     super(filePath);
     this.objectMapper = objectMapper;

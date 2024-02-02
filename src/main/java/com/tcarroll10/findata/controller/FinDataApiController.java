@@ -1,4 +1,4 @@
-package com.tcarroll10.finance.controller;
+package com.tcarroll10.findata.controller;
 
 import java.util.Map;
 import org.apache.logging.log4j.LogManager;
@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import com.tcarroll10.finance.service.FinanceDataApiService;
+import com.tcarroll10.findata.service.FinDataApiService;
 
 /**
  * RestController class for Finance data api service.
@@ -21,11 +21,11 @@ import com.tcarroll10.finance.service.FinanceDataApiService;
 @RequestMapping(path = "/api/v2", produces = "application/json")
 
 @RestController
-public class FinanceDataApiController {
+public class FinDataApiController {
 
-  private static final Logger LOG = LogManager.getLogger(FinanceDataApiController.class);
+  private static final Logger LOG = LogManager.getLogger(FinDataApiController.class);
 
-  private final FinanceDataApiService service;
+  private final FinDataApiService service;
 
   /**
    * Constructor for controller allows service injection.
@@ -33,7 +33,7 @@ public class FinanceDataApiController {
    * @param service Command-line arguments.
    */
 
-  public FinanceDataApiController(FinanceDataApiService service) {
+  public FinDataApiController(FinDataApiService service) {
 
     this.service = service;
   }

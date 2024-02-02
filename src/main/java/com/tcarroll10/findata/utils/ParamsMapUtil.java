@@ -1,4 +1,4 @@
-package com.tcarroll10.finance.utils;
+package com.tcarroll10.findata.utils;
 
 import java.util.ArrayList;
 import java.util.Arrays;

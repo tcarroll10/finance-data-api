@@ -1,4 +1,4 @@
-package com.tcarroll10.finance.repo;
+package com.tcarroll10.findata.repo;
 
 import java.util.Map;
 
@@ -9,7 +9,7 @@ import java.util.Map;
  * @version 2023-12-27
  */
 
-public interface FinanceMetaDataApiRepo {
+public interface FinMetaDataApiRepo {
 
     public Map<String, Map<String, String>> getMetaData(String dataset,
             Map<String, String> paramsMap);

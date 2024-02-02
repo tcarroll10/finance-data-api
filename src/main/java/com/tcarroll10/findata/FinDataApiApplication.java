@@ -1,5 +1,5 @@
 
-package com.tcarroll10.finance;
+package com.tcarroll10.findata;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -12,7 +12,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  */
 
 @SpringBootApplication
-public class FinanceDataApiApplication {
+public class FinDataApiApplication {
 
   /**
    * This is the main method.
@@ -21,7 +21,7 @@ public class FinanceDataApiApplication {
    */
 
   public static void main(String[] args) {
-    SpringApplication.run(FinanceDataApiApplication.class, args);
+    SpringApplication.run(FinDataApiApplication.class, args);
   }
 
 }

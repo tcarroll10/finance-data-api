@@ -1,4 +1,4 @@
-package com.tcarroll10.finance.repo;
+package com.tcarroll10.findata.repo;
 
 import java.util.List;
 import java.util.Map;
@@ -10,7 +10,7 @@ import java.util.Map;
  * @version 2023-12-27
  */
 
-public interface FinanceDataApiRepo {
+public interface FinDataApiRepo {
 
     /**
      * This method supports requests with no parameters.
