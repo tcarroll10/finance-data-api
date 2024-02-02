@@ -1,6 +1,7 @@
 package com.tcarroll10.finance.service;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -15,6 +16,7 @@ import com.tcarroll10.finance.domain.OutDataTo;
 import com.tcarroll10.finance.repo.FinanceDataApiRepo;
 import com.tcarroll10.finance.repo.FinanceMetaDataApiRepo;
 import com.tcarroll10.finance.utils.Const;
+import com.tcarroll10.finance.utils.ParamsMapUtil;
 
 /**
  * Service for Finance data API service.
@@ -32,6 +34,7 @@ public class FinanceDataApiServiceImpl implements FinanceDataApiService {
 
   private final FinanceMetaDataApiRepo metaRepo;
 
+
   /**
    * Constructor for controller allows service injection.
    * 
@@ -44,10 +47,14 @@ public class FinanceDataApiServiceImpl implements FinanceDataApiService {
 
     this.dataRepo = dataRepo;
     this.metaRepo = metaRepo;
+
+
   }
 
   @Override
   public ResponseEntity<?> validateRequestInput(String dataset, Map<String, String> paramsMap) {
+
+
 
     LOG.info("validateRequest with: {} dataset called and {} paramsmap", dataset, paramsMap);
 
@@ -63,11 +70,26 @@ public class FinanceDataApiServiceImpl implements FinanceDataApiService {
     if (inValidateParamsKeys.isPresent()) {
 
       return inValidateParamsKeys.get();
+
+    }
+
+    // if valid dataset and contains valid keys translate to sqlMap
+    Map<String, String> sqlMap = translateParamsToSqlMap(paramsMap);
+    //
+    //
+    // check for valid fields
+    final Optional<ResponseEntity<?>> inValidateParamsFields =
+        validateParamsFields(dataset, sqlMap);
+    if (inValidateParamsFields.isPresent()) {
+
+      return inValidateParamsFields.get();
+
     }
 
     // If validation passes, return a successful response with HTTP status
     List<Map<String, Object>> data = dataRepo.getData(dataset, paramsMap);
-    Map<String, Map<String, String>> metaData = metaRepo.getMetaData(dataset, paramsMap);
+    Map<String, Map<String, String>> metaData = metaRepo.getMetaData(dataset);
+
     Meta meta = Meta.builder().totalCount(data.size()).dataFormats(metaData.get("dataFormats"))
         .labels(metaData.get("labels")).dataTypes(metaData.get("dataTypes")).build();
 
@@ -79,6 +101,8 @@ public class FinanceDataApiServiceImpl implements FinanceDataApiService {
 
   @Override
   public ResponseEntity<?> processRequestNoParams(String dataset) {
+
+
 
     // check for valid dataset
     final Optional<ResponseEntity<?>> response = validateDataset(dataset);
@@ -106,8 +130,9 @@ public class FinanceDataApiServiceImpl implements FinanceDataApiService {
    */
   private Optional<ResponseEntity<?>> validateDataset(final String dataset) {
 
-    Map<String, Map<String, String>> metadata = metaRepo.getMetaData(dataset);
-    if (metadata.isEmpty()) {
+    Map<String, Map<String, String>> metaData = metaRepo.getMetaData(dataset);
+
+    if (metaData.isEmpty()) {
       // If validation fails, return an error response with HTTP status
       // 400
       String msg = String.format("Path parameter localhost:8080/api/v2/%s "
@@ -153,4 +178,73 @@ public class FinanceDataApiServiceImpl implements FinanceDataApiService {
     return Optional.empty();
 
   }
+
+
+  /**
+   * Translates the parameter map into a map where values are strings that we can use to build sql
+   * statements
+   * 
+   * @param paramsMap holds the request parameters from client
+   * @return
+   * @return valid map is empty if valid
+   */
+  private Map<String, String> translateParamsToSqlMap(final Map<String, String> paramsMap) {
+    Map<String, String> sqlMap = new HashMap<>();
+
+    sqlMap.put("fields", ParamsMapUtil.processFields(paramsMap));
+    sqlMap.put("filters", ParamsMapUtil.processFilters(paramsMap));
+
+    return sqlMap;
+
+
+
+  }
+
+  /**
+   * Validates path variable against datasets in metadata.
+   * 
+   * @param dataset interface used for querying the data source
+   * @return optional is empty if valid
+   * 
+   */
+  private Optional<ResponseEntity<?>> validateParamsFields(final String dataset,
+      final Map<String, String> sqlMap) {
+
+
+    Map<String, String> metadata = metaRepo.getMetaData(dataset).get("labels");
+
+    // validate
+    if (!sqlMap.containsKey("fields"))
+      return Optional.empty();
+
+    String values = sqlMap.get("fields");
+
+    if (values != null && !values.isEmpty()) {
+
+      String[] fields = sqlMap.get("fields").split(",");
+
+      for (String field : fields) {
+        if (!metadata.containsKey(field)) {
+
+
+          String msg = String.format("Invalid query parameter '%s' with value '%s'. "
+              + "For more information, please see the documentation.", "field", field);
+          ErrorMsg error =
+              ErrorMsg.builder().error(Const.INVALD_QUERY_PARAMETER).message(msg).build();
+          return Optional.of(ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error));
+
+        }
+
+
+      }
+
+    }
+
+
+
+    return Optional.empty();
+
+  }
+
+
 }
