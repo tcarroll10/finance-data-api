@@ -54,8 +54,6 @@ public class FindataApiServiceImpl implements FindataApiService {
   @Override
   public ResponseEntity<?> validateRequestInput(String dataset, Map<String, String> paramsMap) {
 
-
-
     LOG.info("validateRequest with: {} dataset called and {} paramsmap", dataset, paramsMap);
 
     // check for valid dataset
@@ -88,7 +86,8 @@ public class FindataApiServiceImpl implements FindataApiService {
     }
 
     // If validation passes, return a successful response with HTTP status
-    List<Map<String, Object>> data = dataRepo.getData(dataset, paramsMap);
+    List<Map<String, Object>> data = dataRepo.getData(dataset, sqlMap);
+    // List<Map<String, Object>> data = dataRepo.getData(dataset, paramsMap);
     Map<String, Map<String, String>> metaData = metaRepo.getMetaData(dataset);
 
     Meta meta = Meta.builder().totalCount(data.size()).dataFormats(metaData.get("dataFormats"))
@@ -138,7 +137,7 @@ public class FindataApiServiceImpl implements FindataApiService {
     Map<String, String> sqlMap = new HashMap<>();
 
     sqlMap.put("fields", ParamsMapUtil.processFields(paramsMap));
-    sqlMap.put("filters", ParamsMapUtil.processFilters(paramsMap));
+    sqlMap.put("filter" + "", ParamsMapUtil.processFilters(paramsMap));
 
     return sqlMap;
 

@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
-import com.tcarroll10.findata.utils.ParamsMapHelper;
+import com.tcarroll10.findata.utils.ParamsMapUtil;
 
 /**
  * Repository class for Finance data api service.
@@ -52,7 +52,9 @@ public class FindataApiRepoJdbcImpl implements FindataApiRepo {
   @Override
   public List<Map<String, Object>> getData(String dataset, Map<String, String> paramsMap) {
 
-    String sql = ParamsMapHelper.processParamsMapToSql(dataset, paramsMap);
+    // String sql = ParamsMapHelper.processParamsMapToSql(dataset, paramsMap);
+    String sql = ParamsMapUtil.generateSql(dataset, paramsMap);
+
 
     LOG.info("Sql statement with parameters:  {}", sql);
 

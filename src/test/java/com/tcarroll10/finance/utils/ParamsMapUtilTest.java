@@ -136,5 +136,25 @@ public class ParamsMapUtilTest {
 
   }
 
+  @Test
+  void generateSqlTest() {
+
+    // empty fields
+    testMap.put("fields", "");
+    assertEquals("SELECT *" + "\nFROM Security",
+        ParamsMapHelper.processParamsMapToSql("Security", testMap));
+
+    // one field
+    testMap.put("fields", "record_date");
+    assertEquals("SELECT record_date" + "\nFROM Security",
+        ParamsMapHelper.processParamsMapToSql("Security", testMap));
+
+    // multiple fields
+    testMap.put("fields", "record_date, f1, f2");
+    assertEquals("SELECT record_date, f1, f2" + "\nFROM Security",
+        ParamsMapHelper.processParamsMapToSql("Security", testMap));
+
+  }
+
 
 }

@@ -142,6 +142,46 @@ public abstract class ParamsMapUtil {
     return orderBy;
   }
 
+
+
+  public static String generateSql(String dataset, Map<String, String> sqlMap) {
+
+    // String fields = "";
+    // String filter = "";
+    // String sort = "";
+
+
+
+    String select = sqlMap.getOrDefault("fields", "");
+
+    String from = dataset;
+
+    String where = sqlMap.getOrDefault("filter", "");
+
+    String orderBy = sqlMap.getOrDefault("sort", "");
+
+    StringBuilder resultBuilder = new StringBuilder();
+
+    if (!select.trim().isEmpty()) {
+      resultBuilder.append("SELECT " + select.trim()).append("\n");
+    }
+
+    if (!from.trim().isEmpty()) {
+      resultBuilder.append("FROM " + from.trim()).append("\n");
+    }
+
+    if (!where.trim().isEmpty()) {
+      resultBuilder.append("WHERE " + where.trim()).append("\n");
+    }
+
+    if (!orderBy.trim().isEmpty()) {
+      resultBuilder.append("ORDER By " + where.trim());
+    }
+
+    return resultBuilder.toString();
+
+  }
+
   /**
    * Splits the 'filter' request parameter. Uses a
    * 
