@@ -50,10 +50,10 @@ public class FindataApiRepoJdbcImpl implements FindataApiRepo {
   }
 
   @Override
-  public List<Map<String, Object>> getData(String dataset, Map<String, String> paramsMap) {
+  public List<Map<String, Object>> getData(String dataset, Map<String, String> sqlMap) {
 
     // String sql = ParamsMapHelper.processParamsMapToSql(dataset, paramsMap);
-    String sql = ParamsMapUtil.generateSql(dataset, paramsMap);
+    String sql = ParamsMapUtil.generateSql(dataset, sqlMap);
 
 
     LOG.info("Sql statement with parameters:  {}", sql);

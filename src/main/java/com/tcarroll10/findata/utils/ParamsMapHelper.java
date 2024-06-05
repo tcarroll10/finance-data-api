@@ -15,7 +15,7 @@ import java.util.regex.Pattern;
  * @since 2023-12-27
  */
 
-public abstract class ParamsMapHelper {
+public class ParamsMapHelper {
 
   /**
    * Processes the fields request parameter. If the fields parameter is not present or empty will

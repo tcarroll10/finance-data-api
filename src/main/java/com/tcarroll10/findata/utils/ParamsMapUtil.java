@@ -16,7 +16,7 @@ import java.util.regex.Pattern;
  */
 
 
-public abstract class ParamsMapUtil {
+public class ParamsMapUtil {
 
   /**
    * Extracts the fields request parameter. If the fields parameter is not present or empty will
@@ -175,7 +175,7 @@ public abstract class ParamsMapUtil {
     }
 
     if (!orderBy.trim().isEmpty()) {
-      resultBuilder.append("ORDER By " + where.trim());
+      resultBuilder.append("ORDER By " + orderBy.trim());
     }
 
     return resultBuilder.toString();
@@ -188,7 +188,7 @@ public abstract class ParamsMapUtil {
    * @param input string to split
    * @return a filter
    */
-  public static String[] splitFilterParam(String input) {
+  private static String[] splitFilterParam(String input) {
 
     Pattern pattern = Pattern.compile("(?:,?([^:]+:[^:]+:\\([^)]+\\)))|(?:,?([^:]+:[^:]+:[^,]+))");
     Matcher matcher = pattern.matcher(input);

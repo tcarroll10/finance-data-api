@@ -7,7 +7,7 @@ package com.tcarroll10.findata.utils;
  * @author tom carroll
  * @since 01/20/2024 10:10 PM
  */
-public abstract class Const {
+public class Const {
 
   public static final String INVALD_QUERY_PARAMETER = "Invalid Query Param";
 

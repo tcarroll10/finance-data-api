@@ -29,7 +29,7 @@ public interface FindataApiRepo {
    * @return a List of Maps representing the query results
    */
 
-  public List<Map<String, Object>> getData(String dataset, Map<String, String> paramsMap);
+  public List<Map<String, Object>> getData(String dataset, Map<String, String> sqlMap);
 
 
 

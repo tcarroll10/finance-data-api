@@ -33,6 +33,7 @@ public class FindataApiServiceImpl implements FindataApiService {
   private final FindataValidatorService validator;
 
 
+
   /**
    * Constructor for controller allows service injection.
    * 
@@ -47,9 +48,8 @@ public class FindataApiServiceImpl implements FindataApiService {
     this.dataRepo = dataRepo;
     this.metaRepo = metaRepo;
     this.validator = validator;
+
   }
-
-
 
   @Override
   public ResponseEntity<?> validateRequestInput(String dataset, Map<String, String> paramsMap) {
@@ -74,7 +74,6 @@ public class FindataApiServiceImpl implements FindataApiService {
 
     // if valid dataset and contains valid keys translate to sqlMap
     Map<String, String> sqlMap = translateParamsToSqlMap(paramsMap);
-    //
     //
     // check for valid fields
     final Optional<ResponseEntity<?>> inValidateParamsFields =
@@ -137,7 +136,10 @@ public class FindataApiServiceImpl implements FindataApiService {
     Map<String, String> sqlMap = new HashMap<>();
 
     sqlMap.put("fields", ParamsMapUtil.processFields(paramsMap));
-    sqlMap.put("filter" + "", ParamsMapUtil.processFilters(paramsMap));
+    sqlMap.put("filters", ParamsMapUtil.processFilters(paramsMap));
+    sqlMap.put("sort", ParamsMapUtil.processSort(paramsMap));
+    // pagination, and format
+
 
     return sqlMap;
 
