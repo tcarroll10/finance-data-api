@@ -29,7 +29,7 @@ public class ParamsMapUtil {
 
   public static String processFields(Map<String, String> paramsMap) {
 
-    String result = "";
+    String result = "*";
 
     if (!paramsMap.containsKey("fields"))
       return result;
@@ -58,7 +58,7 @@ public class ParamsMapUtil {
    * trimmed.
    * 
    * @param paramsMap map of parameters
-   * @return the select portion of the sql statement
+   * @return the where portion of the sql statement
    */
 
   public static String processFilters(Map<String, String> paramsMap) {
@@ -109,6 +109,13 @@ public class ParamsMapUtil {
 
   }
 
+  /**
+   * Processes the 'sort' request parameter. If the parameter is not present or empty will return
+   * empty string.
+   * 
+   * @param paramsMap map of parameters
+   * @return the order by portion of the sql statement
+   */
 
   public static String processSort(Map<String, String> params) {
 
@@ -142,23 +149,49 @@ public class ParamsMapUtil {
     return orderBy;
   }
 
+  /**
+   * Processes the 'page[number]' request parameter.
+   * 
+   * @param paramsMap map of parameters
+   * @return the OFFSET portion of the sql statement
+   */
+
+
+
+  public static String processPageNumber(Map<String, String> paramsMap) {
+    if (!paramsMap.containsKey("page")) {
+      return "0";
+    }
+
+    // Convert 'page[number]' and 'page[size]' to integers
+    int pageNumber = Integer.parseInt(paramsMap.get("page"));
+    int pageSize = Integer.parseInt(paramsMap.get("per_page"));
+
+    // Calculate the offset
+    int offset = (pageNumber - 1) * pageSize;
+
+    // Return the offset as a String
+    return String.valueOf(offset);
+  }
+
 
 
   public static String generateSql(String dataset, Map<String, String> sqlMap) {
 
-    // String fields = "";
-    // String filter = "";
-    // String sort = "";
 
-
-
-    String select = sqlMap.getOrDefault("fields", "");
+    String select = sqlMap.getOrDefault("fields", "*");
 
     String from = dataset;
 
     String where = sqlMap.getOrDefault("filter", "");
 
     String orderBy = sqlMap.getOrDefault("sort", "");
+
+    String pageSize = sqlMap.getOrDefault("per_page", "100");
+
+    String pageNumber = sqlMap.getOrDefault("page", "0");
+
+
 
     StringBuilder resultBuilder = new StringBuilder();
 
@@ -175,8 +208,13 @@ public class ParamsMapUtil {
     }
 
     if (!orderBy.trim().isEmpty()) {
-      resultBuilder.append("ORDER By " + orderBy.trim());
+      resultBuilder.append("ORDER By " + orderBy.trim()).append("\n");
     }
+
+    resultBuilder.append("LIMIT " + pageSize.trim()).append("\n");
+
+    resultBuilder.append("OFFSET " + pageNumber.trim());
+
 
     return resultBuilder.toString();
 

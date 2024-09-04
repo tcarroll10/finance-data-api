@@ -29,5 +29,24 @@ insert into TestTable (record_date, security_type_desc, security_desc,avg_intere
                 values ('2023-11-30', 'Marketable', 'Treasury Floating Rate Notes (FRN)', 5.144);
                 
                 
+                delete from UserTable;
+insert into UserTable (name, id ) 
+                values ('Tom', 1);
+insert into UserTable (name, id ) 
+                values ('Christina', 2);
+insert into UserTable (name, id ) 
+                values ('Ryan', 3);
+insert into UserTable (name, id ) 
+                values ('Patrick', 4);
+insert into UserTable (name, id ) 
+                values ('Andrew', 5);
+insert into UserTable (name, id ) 
+                values ('Matthew', 6);
+                
+                
+                
+                
+
+                
 
 

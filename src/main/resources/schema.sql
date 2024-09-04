@@ -14,5 +14,12 @@ create table if not exists TestTable (
 
 );
 
+create table if not exists UserTable (
+  name varchar(50),
+  id integer
+  
+
+);
+
 
 

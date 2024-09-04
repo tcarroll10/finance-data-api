@@ -75,14 +75,14 @@ public class FindataApiServiceImpl implements FindataApiService {
     // if valid dataset and contains valid keys translate to sqlMap
     Map<String, String> sqlMap = translateParamsToSqlMap(paramsMap);
     //
-    // check for valid fields
-    final Optional<ResponseEntity<?>> inValidateParamsFields =
-        validator.validateParamsFields(dataset, sqlMap);
-    if (inValidateParamsFields.isPresent()) {
-
-      return inValidateParamsFields.get();
-
-    }
+    // // check for valid fields
+    // final Optional<ResponseEntity<?>> inValidateParamsFields =
+    // validator.validateParamsFields(dataset, sqlMap);
+    // if (inValidateParamsFields.isPresent()) {
+    //
+    // return inValidateParamsFields.get();
+    //
+    // }
 
     // If validation passes, return a successful response with HTTP status
     List<Map<String, Object>> data = dataRepo.getData(dataset, sqlMap);
@@ -138,7 +138,9 @@ public class FindataApiServiceImpl implements FindataApiService {
     sqlMap.put("fields", ParamsMapUtil.processFields(paramsMap));
     sqlMap.put("filters", ParamsMapUtil.processFilters(paramsMap));
     sqlMap.put("sort", ParamsMapUtil.processSort(paramsMap));
-    // pagination, and format
+    sqlMap.put("per_page", paramsMap.getOrDefault("per_page", "100"));
+    sqlMap.put("page", ParamsMapUtil.processPageNumber(paramsMap));
+    // format
 
 
     return sqlMap;

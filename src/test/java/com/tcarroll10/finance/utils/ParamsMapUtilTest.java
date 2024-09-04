@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import com.tcarroll10.findata.utils.ParamsMapHelper;
 import com.tcarroll10.findata.utils.ParamsMapUtil;
 
 public class ParamsMapUtilTest {
@@ -23,15 +22,15 @@ public class ParamsMapUtilTest {
   void processFieldsTest() {
 
     // fields param not present
-    assertEquals("", ParamsMapUtil.processFields(testMap));
+    assertEquals("*", ParamsMapUtil.processFields(testMap));
 
     // null
     testMap.put("fields", null);
-    assertEquals("", ParamsMapUtil.processFields(testMap));
+    assertEquals("*", ParamsMapUtil.processFields(testMap));
 
     // empty string
     testMap.put("fields", "");
-    assertEquals("", ParamsMapUtil.processFields(testMap));
+    assertEquals("*", ParamsMapUtil.processFields(testMap));
 
     // single field
     testMap.put("fields", "f1");
@@ -96,63 +95,90 @@ public class ParamsMapUtilTest {
 
   }
 
-
+  @Test
   void processSortTest() {
 
     // sort param not present
-    assertEquals("", ParamsMapHelper.processSort(testMap));
+    assertEquals("", ParamsMapUtil.processSort(testMap));
 
     // null
     testMap.put("sort", null);
-    assertEquals("", ParamsMapHelper.processSort(testMap));
+    assertEquals("", ParamsMapUtil.processSort(testMap));
 
     // empty
     testMap.put("sort", "");
-    assertEquals("", ParamsMapHelper.processSort(testMap));
+    assertEquals("", ParamsMapUtil.processSort(testMap));
 
     // one element sort DESC
     testMap.put("sort", "-record_date");
-    assertEquals("record_date DESC", ParamsMapHelper.processSort(testMap));
+    assertEquals("record_date DESC", ParamsMapUtil.processSort(testMap));
 
     // one element sort DESC
     testMap.put("sort", "record_date");
-    assertEquals("record_date ASC", ParamsMapHelper.processSort(testMap));
+    assertEquals("record_date ASC", ParamsMapUtil.processSort(testMap));
 
     // two element sort DESC, DESC
     testMap.put("sort", "-f1,-f2");
-    assertEquals("f1 DESC, f2 DESC", ParamsMapHelper.processSort(testMap));
+    assertEquals("f1 DESC, f2 DESC", ParamsMapUtil.processSort(testMap));
 
     // two element sort DESC, ASC
     testMap.put("sort", "-f1,f2");
-    assertEquals("f1 DESC, f2 ASC", ParamsMapHelper.processSort(testMap));
+    assertEquals("f1 DESC, f2 ASC", ParamsMapUtil.processSort(testMap));
 
     // two element sort ASC,ASC
     testMap.put("sort", "f1,f2");
-    assertEquals("f1 ASC, f2 ASC", ParamsMapHelper.processSort(testMap));
+    assertEquals("f1 ASC, f2 ASC", ParamsMapUtil.processSort(testMap));
 
     // two element sort ASC,DESC
     testMap.put("sort", "f1,-f2");
-    assertEquals("f1 ASC, f2 DESC", ParamsMapHelper.processSort(testMap));
+    assertEquals("f1 ASC, f2 DESC", ParamsMapUtil.processSort(testMap));
 
   }
+
+  @Test
+  void processPageNumber() {
+
+    // param not present
+    assertEquals("0", ParamsMapUtil.processPageNumber(testMap));
+
+    // first page
+    testMap.put("page", "1");
+    testMap.put("per_page", "100");
+    assertEquals("0", ParamsMapUtil.processPageNumber(testMap));
+
+
+    // first page
+    testMap.put("page", "3");
+    testMap.put("per_page", "100");
+    assertEquals("200", ParamsMapUtil.processPageNumber(testMap));
+
+  }
+
 
   @Test
   void generateSqlTest() {
 
     // empty fields
-    testMap.put("fields", "");
-    assertEquals("SELECT *" + "\nFROM Security",
-        ParamsMapHelper.processParamsMapToSql("Security", testMap));
+    testMap.put("fields", "*");
+    assertEquals("SELECT *" + "\nFROM Security" + "\nLIMIT 100\n" + "OFFSET 0",
+        ParamsMapUtil.generateSql("Security", testMap));
 
     // one field
     testMap.put("fields", "record_date");
-    assertEquals("SELECT record_date" + "\nFROM Security",
-        ParamsMapHelper.processParamsMapToSql("Security", testMap));
+    assertEquals("SELECT record_date" + "\nFROM Security" + "\nLIMIT 100\n" + "OFFSET 0",
+        ParamsMapUtil.generateSql("Security", testMap));
 
     // multiple fields
     testMap.put("fields", "record_date, f1, f2");
-    assertEquals("SELECT record_date, f1, f2" + "\nFROM Security",
-        ParamsMapHelper.processParamsMapToSql("Security", testMap));
+    assertEquals("SELECT record_date, f1, f2" + "\nFROM Security" + "\nLIMIT 100\n" + "OFFSET 0",
+        ParamsMapUtil.generateSql("Security", testMap));
+
+    // multiple fields with pagination
+    testMap.put("fields", "record_date, f1, f2");
+    testMap.put("page", "200");
+    testMap.put("per_page", "100");
+    assertEquals("SELECT record_date, f1, f2" + "\nFROM Security" + "\nLIMIT 100\n" + "OFFSET 200",
+        ParamsMapUtil.generateSql("Security", testMap));
 
   }
 
