@@ -12,6 +12,7 @@ import com.tcarroll10.findata.domain.Meta;
 import com.tcarroll10.findata.domain.OutDataTo;
 import com.tcarroll10.findata.repo.FindataApiRepo;
 import com.tcarroll10.findata.repo.FindataMetadataApiRepo;
+import com.tcarroll10.findata.utils.CsvUtil;
 import com.tcarroll10.findata.utils.ParamsMapUtil;
 
 /**
@@ -30,7 +31,7 @@ public class FindataApiServiceImpl implements FindataApiService {
 
   private final FindataMetadataApiRepo metaRepo;
 
-  private final FindataValidatorService validator;
+  private final FindataValidatorServiceImpl validator;
 
 
 
@@ -43,7 +44,7 @@ public class FindataApiServiceImpl implements FindataApiService {
    */
 
   public FindataApiServiceImpl(FindataApiRepo dataRepo, FindataMetadataApiRepo metaRepo,
-      FindataValidatorService validator) {
+      FindataValidatorServiceImpl validator) {
 
     this.dataRepo = dataRepo;
     this.metaRepo = metaRepo;
@@ -73,28 +74,50 @@ public class FindataApiServiceImpl implements FindataApiService {
     }
 
     // if valid dataset and contains valid keys translate to sqlMap
-    Map<String, String> sqlMap = translateParamsToSqlMap(paramsMap);
-    //
-    // // check for valid fields
-    // final Optional<ResponseEntity<?>> inValidateParamsFields =
-    // validator.validateParamsFields(dataset, sqlMap);
-    // if (inValidateParamsFields.isPresent()) {
-    //
-    // return inValidateParamsFields.get();
-    //
-    // }
+    final Map<String, String> sqlMap = translateParamsToSqlMap(paramsMap);
 
-    // If validation passes, return a successful response with HTTP status
+    // check for valid fields
+    final Optional<ResponseEntity<?>> validateFields = validator.validateFields(dataset, sqlMap);
+    LOG.info("validate fields called with with: {} dataset called and {} sqlmap", dataset, sqlMap);
+    if (validateFields.isPresent()) {
+
+      return validateFields.get();
+
+    }
+
+    // check for valid format
+    final Optional<ResponseEntity<?>> validateFormat = validator.validateFormat(dataset, sqlMap);
+    LOG.info("validate format called with with: {} dataset called and {} sqlmap", dataset, sqlMap);
+    if (validateFormat.isPresent()) {
+
+      return validateFormat.get();
+
+    }
+
+    // If validation passes, pull data
     List<Map<String, Object>> data = dataRepo.getData(dataset, sqlMap);
-    // List<Map<String, Object>> data = dataRepo.getData(dataset, paramsMap);
-    Map<String, Map<String, String>> metaData = metaRepo.getMetaData(dataset);
 
-    Meta meta = Meta.builder().totalCount(data.size()).dataFormats(metaData.get("dataFormats"))
-        .labels(metaData.get("labels")).dataTypes(metaData.get("dataTypes")).build();
 
-    OutDataTo output = OutDataTo.builder().data(data).meta(meta).build();
+    // Determine the format: JSON or CSV
+    String format = sqlMap.getOrDefault("format", "json");
 
-    return ResponseEntity.ok().body(output);
+    if ("csv".equalsIgnoreCase(format)) {
+      String csvData = CsvUtil.convertListMapToCsv(data);
+
+      return ResponseEntity.ok().header("Content-Type", "text/csv").body(csvData);
+
+    } else {
+
+      Map<String, Map<String, String>> metaData = metaRepo.getMetaData(dataset);
+
+      Meta meta = Meta.builder().totalCount(data.size()).dataFormats(metaData.get("dataFormats"))
+          .labels(metaData.get("labels")).dataTypes(metaData.get("dataTypes")).build();
+
+      OutDataTo output = OutDataTo.builder().data(data).meta(meta).build();
+
+      return ResponseEntity.ok().body(output);
+    }
+
 
   }
 
@@ -113,6 +136,8 @@ public class FindataApiServiceImpl implements FindataApiService {
     }
 
     List<Map<String, Object>> data = dataRepo.getData(dataset);
+
+
     Map<String, Map<String, String>> metaData = metaRepo.getMetaData(dataset);
     Meta meta = Meta.builder().totalCount(data.size()).dataFormats(metaData.get("dataFormats"))
         .labels(metaData.get("labels")).dataTypes(metaData.get("dataTypes")).build();
@@ -140,7 +165,7 @@ public class FindataApiServiceImpl implements FindataApiService {
     sqlMap.put("sort", ParamsMapUtil.processSort(paramsMap));
     sqlMap.put("per_page", paramsMap.getOrDefault("per_page", "100"));
     sqlMap.put("page", ParamsMapUtil.processPageNumber(paramsMap));
-    // format
+    sqlMap.put("format", paramsMap.getOrDefault("format", "json"));
 
 
     return sqlMap;

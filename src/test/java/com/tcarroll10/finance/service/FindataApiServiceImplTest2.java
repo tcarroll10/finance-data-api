@@ -15,20 +15,20 @@ import org.springframework.http.ResponseEntity;
 import com.tcarroll10.findata.repo.FindataApiRepo;
 import com.tcarroll10.findata.repo.FindataMetadataApiRepo;
 import com.tcarroll10.findata.service.FindataApiServiceImpl;
-import com.tcarroll10.findata.service.FindataValidatorService;
+import com.tcarroll10.findata.service.FindataValidatorServiceImpl;
 
 public class FindataApiServiceImplTest2 {
 
   private FindataApiServiceImpl service;
   private FindataApiRepo dataRepo;
   private FindataMetadataApiRepo metaRepo;
-  private FindataValidatorService validator;
+  private FindataValidatorServiceImpl validator;
 
   @BeforeEach
   void setUp() {
     dataRepo = mock(FindataApiRepo.class);
     metaRepo = mock(FindataMetadataApiRepo.class);
-    validator = mock(FindataValidatorService.class);
+    validator = mock(FindataValidatorServiceImpl.class);
     service = new FindataApiServiceImpl(dataRepo, metaRepo, validator);
   }
 

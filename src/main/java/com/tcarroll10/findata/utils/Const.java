@@ -11,6 +11,10 @@ public class Const {
 
   public static final String INVALD_QUERY_PARAMETER = "Invalid Query Param";
 
+  public static final String INVALD_FIELD_PARAMETER = "Invalid Field Param";
+
+  public static final String INVALD_FORMAT_PARAMETER = "Invalid Response Format";
+
   public static final String BAD_DATASET = "Bad Path Param";
 
   public final static String[] validKeys =

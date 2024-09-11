@@ -36,6 +36,8 @@ public class ParamsMapUtil {
 
     String values = paramsMap.get("fields");
 
+
+
     if (values != null && !values.isEmpty()) {
 
       String[] fieldsArray =
@@ -179,7 +181,7 @@ public class ParamsMapUtil {
   public static String generateSql(String dataset, Map<String, String> sqlMap) {
 
 
-    String select = sqlMap.getOrDefault("fields", "*");
+    String select = sqlMap.getOrDefault("fields", "");
 
     String from = dataset;
 

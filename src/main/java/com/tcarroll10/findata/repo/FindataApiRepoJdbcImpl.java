@@ -52,7 +52,8 @@ public class FindataApiRepoJdbcImpl implements FindataApiRepo {
   @Override
   public List<Map<String, Object>> getData(String dataset, Map<String, String> sqlMap) {
 
-    // String sql = ParamsMapHelper.processParamsMapToSql(dataset, paramsMap);
+    LOG.info("generate sql called with following sqlMapSql:  {}", sqlMap);
+
     String sql = ParamsMapUtil.generateSql(dataset, sqlMap);
 
 

@@ -57,6 +57,7 @@ public class FindataApiController {
     if (paramsMap != null && !paramsMap.isEmpty()) {
 
       return service.validateRequestInput(dataset, paramsMap);
+
     } else {
 
       return service.processRequestNoParams(dataset);
