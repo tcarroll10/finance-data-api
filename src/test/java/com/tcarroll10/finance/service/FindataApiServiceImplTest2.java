@@ -39,8 +39,7 @@ public class FindataApiServiceImplTest2 {
     Map<String, String> paramsMap = Collections.emptyMap();
     when(validator.validateDataset(dataset)).thenReturn(Optional.empty());
     when(validator.validateParamsKeys(paramsMap)).thenReturn(Optional.empty());
-    when(validator.validateParamsFields(dataset, Collections.emptyMap()))
-        .thenReturn(Optional.empty());
+    when(validator.validateFields(dataset, Collections.emptyMap())).thenReturn(Optional.empty());
     when(dataRepo.getData(dataset, Collections.emptyMap())).thenReturn(Collections.emptyList());
     when(metaRepo.getMetaData(dataset)).thenReturn(Collections.emptyMap());
 
