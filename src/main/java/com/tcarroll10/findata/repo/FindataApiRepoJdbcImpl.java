@@ -56,7 +56,6 @@ public class FindataApiRepoJdbcImpl implements FindataApiRepo {
 
     String sql = ParamsMapUtil.generateSql(dataset, sqlMap);
 
-
     LOG.info("Sql statement with parameters:  {}", sql);
 
     List<Map<String, Object>> resultList =
