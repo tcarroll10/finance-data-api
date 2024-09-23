@@ -34,7 +34,6 @@ public class FindataValidatorServiceImplTest {
   Map<String, Map<String, String>> metaData;
 
 
-
   @BeforeEach
   public void setUp() {
     MockitoAnnotations.openMocks(this);

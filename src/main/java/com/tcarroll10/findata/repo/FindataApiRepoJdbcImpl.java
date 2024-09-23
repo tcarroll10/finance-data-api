@@ -72,4 +72,18 @@ public class FindataApiRepoJdbcImpl implements FindataApiRepo {
 
   }
 
+  // Method to get valid columns from the database
+  public List<String> getValidColumns(String tableName, String schemaName) {
+    String sql =
+        "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = :tableName AND TABLE_SCHEMA = :schemaName";
+
+    // Using named parameters
+    MapSqlParameterSource params = new MapSqlParameterSource();
+    params.addValue("tableName", tableName.toUpperCase());
+    params.addValue("schemaName", schemaName.toUpperCase());
+
+    return jdbcTemplate.queryForList(sql, params, String.class);
+  }
+
+
 }

@@ -11,7 +11,10 @@ insert into Security (record_date, security_type_desc, security_desc,avg_interes
                 values ('2023-11-30', 'Marketable', 'Treasury Inflation-Protected Securities (TIPS)', 0.624);
 insert into Security (record_date, security_type_desc, security_desc,avg_interest_rate_amt ) 
                 values ('2023-11-30', 'Marketable', 'Treasury Floating Rate Notes (FRN)', 5.144);
-                
+insert into Security (record_date, security_type_desc, security_desc,avg_interest_rate_amt ) 
+                values ('2023-10-31', 'Marketable', 'Treasury Floating Rate Notes (FRN)', 5.144);
+insert into Security (record_date, security_type_desc, security_desc,avg_interest_rate_amt ) 
+                values ('2023-07-31', 'Marketable', 'Treasury Floating Rate Notes (FRN)', 5.144);                
                 
                 
 delete from TestTable;

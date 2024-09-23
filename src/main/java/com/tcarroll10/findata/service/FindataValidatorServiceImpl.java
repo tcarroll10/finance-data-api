@@ -1,6 +1,7 @@
 package com.tcarroll10.findata.service;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import org.apache.logging.log4j.LogManager;
@@ -9,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import com.tcarroll10.findata.domain.ErrorMsg;
+import com.tcarroll10.findata.repo.FindataApiRepo;
 import com.tcarroll10.findata.repo.FindataMetadataApiRepo;
 import com.tcarroll10.findata.utils.Const;
 
@@ -21,6 +23,8 @@ public class FindataValidatorServiceImpl implements FindataValidatorService {
 
   private final FindataMetadataApiRepo metaRepo;
 
+  private final FindataApiRepo repo;
+
   /**
    * Constructor for controller allows service injection.
    * 
@@ -29,12 +33,12 @@ public class FindataValidatorServiceImpl implements FindataValidatorService {
    * 
    */
 
-
-  public FindataValidatorServiceImpl(FindataMetadataApiRepo metaRepo) {
+  public FindataValidatorServiceImpl(FindataMetadataApiRepo metaRepo, FindataApiRepo repo) {
 
     this.metaRepo = metaRepo;
-
+    this.repo = repo;
   }
+
 
   /**
    * Validates path variable against datasets in metadata.
@@ -57,6 +61,7 @@ public class FindataValidatorServiceImpl implements FindataValidatorService {
     }
     return Optional.empty();
   }
+
 
   /**
    * Validates that parameter keys are valid.
@@ -109,6 +114,7 @@ public class FindataValidatorServiceImpl implements FindataValidatorService {
     Map<String, String> metadata = metaRepo.getMetaData(dataset).get("labels");
 
 
+    List<String> columns = repo.getValidColumns(dataset, "Public");
     String values = sqlMap.get("fields");
 
 
@@ -118,7 +124,8 @@ public class FindataValidatorServiceImpl implements FindataValidatorService {
       String[] fields = sqlMap.get("fields").split(",");
 
       for (String field : fields) {
-        if (!metadata.containsKey(field)) {
+        if (!columns.contains(field.toUpperCase().trim())) {
+          // if (!metadata.containsKey(field.trim())) {
 
 
           String msg = String.format("Invalid query parameter '%s' with value '%s'. "

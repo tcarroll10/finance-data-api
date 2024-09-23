@@ -161,7 +161,7 @@ public class FindataApiServiceImpl implements FindataApiService {
     Map<String, String> sqlMap = new HashMap<>();
 
     sqlMap.put("fields", ParamsMapUtil.processFields(paramsMap));
-    sqlMap.put("filters", ParamsMapUtil.processFilters(paramsMap));
+    sqlMap.put("filter", ParamsMapUtil.processFilters(paramsMap));
     sqlMap.put("sort", ParamsMapUtil.processSort(paramsMap));
     sqlMap.put("per_page", paramsMap.getOrDefault("per_page", "100"));
     sqlMap.put("page", ParamsMapUtil.processPageNumber(paramsMap));

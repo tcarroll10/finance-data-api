@@ -32,5 +32,7 @@ public interface FindataApiRepo {
   public List<Map<String, Object>> getData(String dataset, Map<String, String> sqlMap);
 
 
+  public List<String> getValidColumns(String tableName, String schemaName);
+
 
 }
